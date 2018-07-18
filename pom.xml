@@ -124,6 +124,61 @@
         </plugins>
     </build>
     </profile>
+	 
+	 <!-- Profile to deploy the parent-pom to nexus -->
+        <!-- Instructions : http://www.baeldung.com/maven-deploy-nexus -->
+        <!-- Command to deploy the pom file : mvn clean deploy -Ppom-deploy -Dmaven.test.skip=true -->
+        <profile>
+            <id>pom-deploy</id>
+            
+            <distributionManagement>
+                <snapshotRepository>
+                    <uniqueVersion>false</uniqueVersion>
+                    <id>apigee-snapshot</id>
+                    <name>nexus snapshot</name>
+                    <!--TODO : Make this dynamic -->
+                    <url>http://repo.clover.sidgs.net/content/repositories/apigee-snapshot</url>
+                </snapshotRepository>
+            </distributionManagement>
+ 
+            <build>
+                <plugins>
+                    <!-- disabling the exisitng mapping to maven repository -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin> 
+                    
+                    <!-- using nexus specific maven deploy plugin -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.5.1</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>default-deploy</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- below value same as server id in maven settings file -->
+                            <serverId>apigee-snapshot</serverId>
+                            <nexusUrl>http://repo.clover.sidgs.net/content</nexusUrl>
+                            <skipStaging>true</skipStaging>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+	 
     </profiles>
 	
 	  <distributionManagement>
