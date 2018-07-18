@@ -181,17 +181,4 @@
 	 
     </profiles>
 	
-	  <distributionManagement>
-    <snapshotRepository>
-      <id>repo-id</id>
-      <name>my snapshot repository</name>
-      <url>file:///path/to/snapshot/repo</url>
-    </snapshotRepository>
-    <repository>
-      <id>repo-id2</id>
-      <name>my repository</name>
-      <url>file:///path/to/repo</url>
-    </repository>
-  </distributionManagement>
-	
 </project>
